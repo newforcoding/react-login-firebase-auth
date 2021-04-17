@@ -1,8 +1,28 @@
-import React from 'react';
+import React, {useState, useRef } from 'react';
 import {Grid,TextField,Button} from '@material-ui/core';
-import {Link} from 'react-router-dom'
+import Alert from '@material-ui/lab/Alert'
+import {Link,useHistory} from 'react-router-dom';
+import {useAuth} from '../Context/AuthContext';
+
 
 function Login(){
+      const emailRef = useRef()
+      const passwordRef = useRef()
+      const {login} = useAuth()
+      const [error,setError] = useState('')
+      const history = useHistory()
+    
+     async function handleSubmit(e){
+       e.preventDefault()
+    
+       try{
+         setError('')
+         await login(emailRef.current.value,passwordRef.current.value)
+         history.push('/')
+       }catch{
+         setError('Failed to sign in')
+       }
+      }
     return (
     <div>
      <Grid container style={{minHeight:"100vh"}}>
@@ -21,11 +41,13 @@ function Login(){
            <div style={{display:"flex",flexDirection:"column",
                  minWidth:400, maxWidth:300
                  }}>
-           <TextField label='Username'
+                         {error && <Alert severity="error">{error}</Alert>}
+           <TextField label='Email'
                       type='text' 
-                      placeholder='Username' 
+                      placeholder='Email' 
                       autoComplete='off' 
                       margin='normal'
+                      ref={emailRef}
                       required
                       />
            <TextField label='Password' 
@@ -33,30 +55,31 @@ function Login(){
                       placeholder='Password' 
                       autoComplete='off' 
                       margin='normal'
+                      ref={passwordRef}
                       required
                       />
            <div style={{height:20}}/>
            <Button color='primary' 
                    variant="contained" 
                    type='submit' 
+                   onClick={handleSubmit}
            style={{margin:'8px 0px'}}>  
            Login
            </Button>
-           <div style={{padding:'5px',textAlign:'center'}}>Don't have an account ?
-              {/* <Link to='/register' 
+           <div style={{padding:'5px',textAlign:'center'}}>Don't have an account?<Link to='/signup' 
                     style={{color:"blue",
                             fontSize:'15px',
-                            marginLeft:"40%",
-                            display:'flex'}}>
+                            display:'grid'
+                            }}>
               Sign up
-               </Link> */}
+               </Link>
            </div>   
           
-             {/* <Link to='/resetpassword' 
+             <Link to='/resetpassword' 
                    style={{color:"blue",fontSize:'15px',marginLeft:"36%",
                   }}> 
                    Forget Password?
-            </Link> */}
+            </Link>
             </div>
            <div/>
            </Grid>

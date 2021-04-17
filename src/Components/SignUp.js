@@ -1,8 +1,32 @@
-import React from 'react';
+import React, {useState, useRef}  from 'react';
 import { Grid,TextField,Button} from '@material-ui/core';
-import {Link} from 'react-router-dom'
+import Alert from '@material-ui/lab/Alert';
+import {Link,useHistory} from 'react-router-dom';
+import {useAuth} from '../Context/AuthContext';
 
 function SignUp() {
+  const userNameRef = useRef()
+  const emailRef = useRef()
+  const passwordRef = useRef()
+  const confirmpasswordRef = useRef()
+  const {signup} = useAuth()
+  const [error,setError] = useState('')
+  const history = useHistory()
+
+ async function handleSubmit(e){
+   e.preventDefault()
+
+   if(passwordRef.current.value !== confirmpasswordRef.current.value) {
+     return setError("Password do not match")
+   }
+   try{
+     setError('')
+     await signup(emailRef.current.value,passwordRef.current.value)
+     history.push('/')
+   }catch{
+     setError('Failed to create account ')
+   }
+  }
   return (
     <div>
       <Grid container style={{minHeight:"100vh"}}>
@@ -22,11 +46,13 @@ function SignUp() {
                       flexDirection:"column",
                       minWidth:400, maxWidth:300,
                  }}>
+                   {error && <Alert severity="error">{error}</Alert>}
            <TextField label='Full Name' 
                       type='text' 
                       placeholder='Full Name' 
                       margin='normal' 
                       autoComplete='off'
+                      ref={userNameRef}
                       required
                       />
            <TextField label='Email' 
@@ -34,6 +60,7 @@ function SignUp() {
                       placeholder='Email' 
                       margin='normal' 
                       autoComplete='off'
+                      ref={emailRef}
                       required
                       />
            <TextField label='Password' 
@@ -41,6 +68,7 @@ function SignUp() {
                       placeholder='password' 
                       margin='normal'
                       autoComplete='off'
+                      ref={passwordRef}
                       required
                       />
            <TextField label='Comfirm Password' 
@@ -48,29 +76,31 @@ function SignUp() {
                       placeholder='confirm password' 
                       margin='normal'
                       autoComplete='off'
+                      ref={confirmpasswordRef}
                       required
                       />
            <div style={{height:10}}/>
             <Button color='primary' 
                     variant="contained" 
                     type='submit'
+                    onClick={handleSubmit}
                     >
              Sign Up
            </Button>
-            {/* <Link to='/login' 
+            <Link to='/login' 
                   style={{color:"blue",
                           fontSize:'15px',
                           textAlign:'center',
                           marginTop:'15px'
                         }}>
               Login
-            </Link> */}
+            </Link>
            </div>
           <div/>
          </Grid>
       </Grid>
     </div>
   );
-}
+ }
 
 export default SignUp

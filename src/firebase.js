@@ -2,12 +2,12 @@ import firebase from "firebase/app";
 import "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBBmPssjra7muad97SWkkUuYvXe5fQJIuE",
-    authDomain: "react-login-auth-543fa.firebaseapp.com",
-    projectId: "react-login-auth-543fa",
-    storageBucket: "react-login-auth-543fa.appspot.com",
-    messagingSenderId: "462262413542",
-    appId: "1:462262413542:web:fcf677a5db47917c9f3327"
+    apiKey: "AIzaSyCtTWTeph4PwCr9LAzt09VJEMTEDs9Da6Q",
+    authDomain: "react-auth-5a06f.firebaseapp.com",
+    projectId: "react-auth-5a06f",
+    storageBucket: "react-auth-5a06f.appspot.com",
+    messagingSenderId: "925498238487",
+    appId: "1:925498238487:web:40dca0163c20d5cad51e52"
   };
 
   firebase.initializeApp(firebaseConfig);
